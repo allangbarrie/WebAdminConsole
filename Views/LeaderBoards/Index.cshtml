@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebAdminConsole.Models.LeaderBoard>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Team)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Difference)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryPosition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryDifference)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Team.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamCategory.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryPosition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryDifference)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LeaderBoardId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LeaderBoardId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LeaderBoardId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
