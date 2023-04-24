@@ -6,7 +6,9 @@ namespace WebAdminConsole.Models
     public class AppIdentityDbContext : IdentityDbContext<AppUser>
     {
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options) 
-        { }
+        {
+            Database.Migrate();
+        }
 
         public DbSet<Stage> Stage { get; set; } = default!;
 
