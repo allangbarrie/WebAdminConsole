@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAdminConsole.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         private RoleManager<IdentityRole> roleManager;

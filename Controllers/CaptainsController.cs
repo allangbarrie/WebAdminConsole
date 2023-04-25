@@ -5,6 +5,7 @@ using WebAdminConsole.Models;
 
 namespace WebAdminConsole.Controllers
 {
+    [Authorize]
     public class CaptainsController : Controller
     {
         private readonly AppIdentityDbContext _context;

@@ -1,21 +1,30 @@
 ﻿@model WebAdminConsole.Models.Runner
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit Runner";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Runner</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TeamId" />
+        <form asp-action="EditRunner">
+            @if (ViewData["Error"] != null)
+            {
+                <h6 class="text-danger">@ViewData["Error"]</h6>
+            }
+            @if (ViewData["TeamName"] != null)
+            {
+                <h6 class="control-label">@ViewData["TeamName"]</h6>
+            }
+            <input type="hidden" asp-for="TeamId" value=@ViewData["TeamId"] />
+            <input type="hidden" asp-for="RunnerId" />
             <div class="form-group">
                 <label asp-for="BibNumberId" class="control-label"></label>
                 <select asp-for="BibNumberId" class="form-control" asp-items="ViewBag.BibNumberId"></select>
+                <span asp-validation-for="BibNumberId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="First" class="control-label"></label>
@@ -29,19 +38,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ListRunners" asp-route-id="@ViewData["TeamId"]">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

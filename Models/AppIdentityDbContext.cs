@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace WebAdminConsole.Models
 {
@@ -8,6 +10,7 @@ namespace WebAdminConsole.Models
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options) 
         {
             Database.Migrate();
+
         }
 
         public DbSet<Stage> Stage { get; set; } = default!;

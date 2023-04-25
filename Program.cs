@@ -2,12 +2,17 @@ using WebAdminConsole.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAdminConsole.IdentityPolicy;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 builder.Services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
 builder.Services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Account/Login");
@@ -19,7 +24,7 @@ builder.Services.Configure<IdentityOptions>(opts => {
     opts.Password.RequireUppercase = true;
     opts.Password.RequireDigit = true;
     opts.User.RequireUniqueEmail = true;
-    opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
+    //opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -32,6 +37,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -10,6 +10,7 @@ using WebAdminConsole.Models;
 
 namespace WebAdminConsole.Controllers
 {
+    [Authorize]
     public class TeamsController : Controller
     {
         private readonly AppIdentityDbContext _context;
@@ -102,10 +103,11 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
+
                     _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +123,7 @@ namespace WebAdminConsole.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["CaptainId"] = new SelectList(_context.Set<Captain>(), "CaptainId", "Name", team.CaptainId);
             ViewData["TeamCategoryId"] = new SelectList(_context.TeamCategory, "TeamCategoryId", "Name", team.TeamCategoryId);
             return View(team);

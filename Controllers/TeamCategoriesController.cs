@@ -10,6 +10,7 @@ using WebAdminConsole.Models;
 
 namespace WebAdminConsole.Controllers
 {
+    [Authorize]
     public class TeamCategoriesController : Controller
     {
         private readonly AppIdentityDbContext _context;
