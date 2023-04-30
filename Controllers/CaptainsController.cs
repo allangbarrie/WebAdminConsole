@@ -15,7 +15,6 @@ namespace WebAdminConsole.Controllers
             _context = context;
         }
 
-        // GET: Captains
         public async Task<IActionResult> Index()
         {
             return _context.Captain != null ?
@@ -23,7 +22,6 @@ namespace WebAdminConsole.Controllers
                         Problem("Entity set 'ApplicationDbContext.Captain'  is null.");
         }
 
-        // GET: Captains/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Captain == null)
@@ -41,15 +39,11 @@ namespace WebAdminConsole.Controllers
             return View(captain);
         }
 
-        // GET: Captains/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Captains/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CaptainId,Name")] Captain captain)

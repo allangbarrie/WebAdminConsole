@@ -240,12 +240,13 @@ namespace WebAdminConsole.Controllers
             }
 
             ViewData["TeamName"] = runner.Teams.Name;
+            ViewData["TeamId"] = runner.TeamId;
 
             return View(runner);
         }
 
         // POST: Runners/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteRunner")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRunnerConfirmed(int id)
         {

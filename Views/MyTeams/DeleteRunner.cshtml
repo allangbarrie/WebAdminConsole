@@ -43,9 +43,9 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="DeleteRunner">
         <input type="hidden" asp-for="RunnerId" />
-        <input type="submit" value="DeleteRunner" class="btn btn-danger" /> 
+        <input type="submit" value="DeleteRunner" class="btn btn-danger" />
         <div>
             <a asp-action="ListRunners" asp-route-id="@ViewData["TeamId"]">Back to List</a>
         </div>
