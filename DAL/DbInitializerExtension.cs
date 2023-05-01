@@ -16,6 +16,7 @@ namespace WebAdminConsole.DAL
 
                 
                 await DbInitializer.SeedAdminUser(context);
+                await DbInitializer.SeedPeter(context);
                 await DbInitializer.SeedCaptains(context);
                 await DbInitializer.Initialize(context);
 
