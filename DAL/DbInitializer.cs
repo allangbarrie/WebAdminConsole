@@ -408,7 +408,7 @@ namespace WebAdminConsole.DAL
             if (!context.Users.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<AppUser>();
-                var hashed = password.HashPassword(user, "password");
+                var hashed = password.HashPassword(user, "Wxva4uahKS3uei5");
                 user.PasswordHash = hashed;
                 var userStore = new UserStore<AppUser>(context);
                 await userStore.CreateAsync(user);
@@ -444,7 +444,7 @@ namespace WebAdminConsole.DAL
             if (!context.Users.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<AppUser>();
-                var hashed = password.HashPassword(user, "password");
+                var hashed = password.HashPassword(user, "Wxva4uahKS3uei5");
                 user.PasswordHash = hashed;
                 var userStore = new UserStore<AppUser>(context);
                 await userStore.CreateAsync(user);
@@ -535,7 +535,7 @@ namespace WebAdminConsole.DAL
                 if (!context.Users.Any(u => u.UserName == user.UserName))
                 {
                     var password = new PasswordHasher<AppUser>();
-                    var hashed = password.HashPassword(user, "Ch4ngeMeNow!");
+                    var hashed = password.HashPassword(user, "Wxva4uahKS3uei5");
                     user.PasswordHash = hashed;
                     var userStore = new UserStore<AppUser>(context);
                     await userStore.CreateAsync(user);
