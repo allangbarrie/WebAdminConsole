@@ -384,12 +384,51 @@ namespace WebAdminConsole.DAL
 
         internal static async Task SeedAdminUser(AppIdentityDbContext context)
         {
+
+            string email = "allangbarrie@gmail.com";
+
             var user = new AppUser
             {
-                UserName = "allangbarrie@gmail.com",
-                NormalizedUserName = "ALLANGBARRIE@GMAIL.COM",
-                Email = "allangbarrie@gmail.com",
-                NormalizedEmail = "ALLANGBARRIE@GMAIL.COM",
+                UserName = email,
+                NormalizedUserName = email.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var roleStore = new RoleStore<IdentityRole>(context);
+
+            if (!context.Roles.Any(r => r.Name == "Administrator"))
+            {
+                await roleStore.CreateAsync(new IdentityRole { Name = "Administrator", NormalizedName = "ADMINISTRATOR" });
+            }
+
+            if (!context.Users.Any(u => u.UserName == user.UserName))
+            {
+                var password = new PasswordHasher<AppUser>();
+                var hashed = password.HashPassword(user, "password");
+                user.PasswordHash = hashed;
+                var userStore = new UserStore<AppUser>(context);
+                await userStore.CreateAsync(user);
+                await userStore.AddToRoleAsync(user, "Administrator");
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        internal static async Task SeedPeter(AppIdentityDbContext context)
+        {
+
+            string email = "greenbeltrelay@outlook.com";
+
+            var user = new AppUser
+            {
+                UserName = email,
+                NormalizedUserName = email.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString()

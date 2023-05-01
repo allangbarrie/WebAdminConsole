@@ -20,14 +20,12 @@ namespace WebService.Controllers
             _context = context;
         }
 
-        // GET: Results
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Result.Include(r => r.BibNumber).Include(r => r.Stage);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Results/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Result == null)
@@ -47,7 +45,6 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        // GET: Results/Create
         public IActionResult Create()
         {
             ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name");
@@ -55,9 +52,6 @@ namespace WebService.Controllers
             return View();
         }
 
-        // POST: Results/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ResultId,StageId,Time,BibNumberId")] Result result)
@@ -73,7 +67,6 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        // GET: Results/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Result == null)
@@ -91,9 +84,6 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        // POST: Results/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ResultId,StageId,Time,BibNumberId")] Result result)
@@ -128,7 +118,6 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        // GET: Results/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Result == null)
@@ -148,7 +137,6 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        // POST: Results/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
