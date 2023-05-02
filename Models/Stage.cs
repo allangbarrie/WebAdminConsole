@@ -6,6 +6,7 @@ namespace WebAdminConsole.Models
     {
         [Required]
         public int StageId { get; set; }
+        [Display(Name = "Stage")]
         public string? Number { get; set; }
         public string? Name { get; set; }
         [DataType(DataType.Duration)]

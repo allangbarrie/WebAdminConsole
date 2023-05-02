@@ -55,9 +55,6 @@ namespace WebAdminConsole.Controllers
             return View(team);
         }
 
-        // POST: Teams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TeamId,Name,CaptainId,TeamCategoryId")] Team team)
@@ -67,8 +64,6 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
             try
             {
 
@@ -81,10 +76,7 @@ namespace WebAdminConsole.Controllers
 
             }
             return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CaptainId"] = new SelectList(_context.Set<Captain>(), "CaptainId", "Name", team.CaptainId);
-            ViewData["TeamCategoryId"] = new SelectList(_context.TeamCategory, "TeamCategoryId", "Name", team.TeamCategoryId);
-            return View(team);
+            
         }
 
         // GET: MyTeams

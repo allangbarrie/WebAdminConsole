@@ -7,6 +7,7 @@ namespace WebAdminConsole.Models
         [Required]
         public int BibNumberId { get; set; }
         [Required]
+        [Display(Name = "BibNumber")]
         public string? Name { get; set; }
 
         public int TeamId { get; set; }

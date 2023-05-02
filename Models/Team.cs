@@ -9,6 +9,7 @@ namespace WebAdminConsole.Models
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(40, ErrorMessage = "Name cannot be longer than 40 characters.")]
+        [Display(Name = "Team")]
         public string Name { get; set; }
 
 

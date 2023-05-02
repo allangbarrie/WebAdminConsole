@@ -57,19 +57,22 @@ namespace WebService.Controllers
             return View();
         }
 
-        // POST: Runners/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RunnerId,First,Last,BibNumberId,TeamId,CategoryId")] Runner runner)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(runner);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            var teamId = await _context.BibNumber
+                .Where(u => u.BibNumberId == runner.BibNumberId)
+                .Select(u => u.TeamId)
+                .FirstOrDefaultAsync();
+
+            runner.TeamId = teamId;
+
+            _context.Add(runner);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
             ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name", runner.BibNumberId);
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", runner.CategoryId);
             ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", runner.TeamId);
