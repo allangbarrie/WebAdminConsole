@@ -173,6 +173,7 @@ namespace WebService.Controllers
                             result.Time = cutOff;
                         }
 
+
                         _context.Add(result);
                         await _context.SaveChangesAsync();
                     }
@@ -259,29 +260,23 @@ namespace WebService.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(result);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ResultExists(result.ResultId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(result);
+                await _context.SaveChangesAsync();
             }
-            ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name", result.BibNumberId);
-            ViewData["StageId"] = new SelectList(_context.Stage, "StageId", "Name", result.StageId);
-            return View(result);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ResultExists(result.ResultId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -301,6 +296,7 @@ namespace WebService.Controllers
             }
 
             return View(result);
+        
         }
 
         [HttpPost, ActionName("Delete")]

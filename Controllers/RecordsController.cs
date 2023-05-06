@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAdminConsole.Models;
+using WebAdminConsole.ViewModels;
 
 namespace WebAdminConsole.Controllers
 {
@@ -20,14 +21,71 @@ namespace WebAdminConsole.Controllers
             _context = context;
         }
 
-        // GET: Records
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Record.Include(x => x.Category).Include(x => x.Stage);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Records/Details/5
+        public async Task<IActionResult> Check()
+        {
+            var modelList = new List<RecordCheckViewModel>();
+
+            foreach (Stage stage in await _context.Stage.ToListAsync())
+            {
+                var menOverall = await _context.Record
+                    .Where(u => u.StageId == stage.StageId)
+                    .Where(u => u.CategoryId == 1).FirstOrDefaultAsync();
+                var womenOverall = await _context.Record
+                    .Where(u => u.StageId == stage.StageId)
+                    .Where(u => u.CategoryId == 2)
+                    .FirstOrDefaultAsync();
+
+                foreach (Category category in await _context.Category.ToListAsync())
+                {
+                    var record = await _context.Record
+                        .Where(u => u.StageId == stage.StageId)
+                        .Where(u => u.CategoryId == category.CategoryId)
+                        .FirstOrDefaultAsync();
+
+                    foreach (Result result in await _context.Result.Where(u => u.StageId == stage.StageId).ToListAsync())
+                    {
+                        var runner = await _context.Runner
+                            .Where(u => u.BibNumberId == result.BibNumberId)
+                            .Include(u => u.Teams)
+                            .FirstOrDefaultAsync();
+
+                        if (runner.CategoryId == category.CategoryId && result.Time < record.Time)
+                        {
+                            var model = new RecordCheckViewModel
+                            {
+                                Stage = stage, Category = category, Overall = false, CategoryRecord = record.Time, NewTime = result.Time, Runner = runner
+                            };
+
+                            var isMale = runner.CategoryId == 1 || runner.CategoryId == 3 || runner.CategoryId == 5;
+
+                            if (isMale && result.Time < menOverall.Time)
+                            {
+                                model.Overall = true;
+                            }
+
+                            if (!isMale && result.Time < womenOverall.Time)
+                            {
+                                model.Overall = true;
+                            }
+
+
+                            modelList.Add(model);
+                        }
+
+                    }
+                }
+
+            }
+
+            return View(modelList);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Record == null)
@@ -47,7 +105,6 @@ namespace WebAdminConsole.Controllers
             return View(@record);
         }
 
-        // GET: Records/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name");
@@ -55,9 +112,6 @@ namespace WebAdminConsole.Controllers
             return View();
         }
 
-        // POST: Records/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecordId,Time,StageId,CategoryId")] Record @record)
@@ -73,7 +127,6 @@ namespace WebAdminConsole.Controllers
             return View(@record);
         }
 
-        // GET: Records/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Record == null)
@@ -91,9 +144,6 @@ namespace WebAdminConsole.Controllers
             return View(@record);
         }
 
-        // POST: Records/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RecordId,Time,StageId,CategoryId")] Record @record)
@@ -103,32 +153,25 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(@record);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RecordExists(@record.RecordId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(@record);
+                await _context.SaveChangesAsync();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", @record.CategoryId);
-            ViewData["StageId"] = new SelectList(_context.Stage, "StageId", "Name", @record.StageId);
-            return View(@record);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RecordExists(@record.RecordId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Records/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Record == null)
@@ -148,7 +191,6 @@ namespace WebAdminConsole.Controllers
             return View(@record);
         }
 
-        // POST: Records/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

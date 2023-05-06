@@ -6,6 +6,7 @@ using WebAdminConsole.Models;
 
 namespace WebAdminConsole.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private UserManager<AppUser> userManager;

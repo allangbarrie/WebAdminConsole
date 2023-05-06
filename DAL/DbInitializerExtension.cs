@@ -20,6 +20,8 @@ namespace WebAdminConsole.DAL
                 await DbInitializer.SeedCaptains(context);
                 await DbInitializer.Initialize(context);
 
+                //await DbInitializer.SeedRunners(context);
+
 
             }
             catch (Exception ex)

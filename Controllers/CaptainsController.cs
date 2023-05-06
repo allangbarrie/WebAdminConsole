@@ -81,27 +81,24 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(captain);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CaptainExists(captain.CaptainId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(captain);
+                await _context.SaveChangesAsync();
             }
-            return View(captain);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CaptainExists(captain.CaptainId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Captains/Delete/5

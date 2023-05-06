@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using WebAdminConsole.Models;
 using WebAdminConsole.ViewModels;
@@ -288,7 +286,7 @@ namespace WebAdminConsole.DAL
                 context.Captain.Add(s);
                 context.SaveChanges();
             }
-            
+
 
             //TeamCreate
             if (context.Team.Any())
@@ -547,5 +545,37 @@ namespace WebAdminConsole.DAL
 
         }
 
+        internal static async Task SeedRunners(AppIdentityDbContext context)
+        {
+
+            //Captains
+            if (context.Runner.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            var bibNumbers = await context.BibNumber.ToListAsync();
+            var catId = 1;
+
+            foreach (var bibNumber in bibNumbers)
+            {
+                if (catId > 6)
+                { catId = 1; }
+
+                var runner = new Runner
+                {
+                    First = "First",
+                    Last = "Last",
+                    BibNumberId = bibNumber.BibNumberId,
+                    TeamId = bibNumber.TeamId,
+                    CategoryId = catId
+                };
+
+                context.Runner.Add(runner);
+                await context.SaveChangesAsync();
+
+                catId++;
+            }
+        }
     }
 }

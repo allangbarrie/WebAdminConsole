@@ -15,7 +15,6 @@ namespace WebService.Controllers
             _context = context;
         }
 
-        // GET: Stages
         public async Task<IActionResult> Index()
         {
               return _context.Stage != null ? 
@@ -23,7 +22,6 @@ namespace WebService.Controllers
                           Problem("Entity set 'ApplicationDbContext.Stage'  is null.");
         }
 
-        // GET: Stages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Stage == null)
@@ -41,15 +39,11 @@ namespace WebService.Controllers
             return View(stage);
         }
 
-        // GET: Stages/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Stages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StageId,Number,Name,Cutoff")] Stage stage)
@@ -63,7 +57,6 @@ namespace WebService.Controllers
             return View(stage);
         }
 
-        // GET: Stages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Stage == null)
@@ -79,9 +72,6 @@ namespace WebService.Controllers
             return View(stage);
         }
 
-        // POST: Stages/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("StageId,Number,Name,Cutoff")] Stage stage)
@@ -114,7 +104,6 @@ namespace WebService.Controllers
             return View(stage);
         }
 
-        // GET: Stages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Stage == null)
@@ -132,7 +121,6 @@ namespace WebService.Controllers
             return View(stage);
         }
 
-        // POST: Stages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

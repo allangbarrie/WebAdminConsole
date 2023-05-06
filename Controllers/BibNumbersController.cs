@@ -20,14 +20,12 @@ namespace WebAdminConsole.Controllers
             _context = context;
         }
 
-        // GET: BibNumbers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.BibNumber.Include(b => b.Team);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: BibNumbers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.BibNumber == null)
@@ -46,16 +44,12 @@ namespace WebAdminConsole.Controllers
             return View(bibNumber);
         }
 
-        // GET: BibNumbers/Create
         public IActionResult Create()
         {
             ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name");
             return View();
         }
 
-        // POST: BibNumbers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BibNumberId,Name,TeamId")] BibNumber bibNumber)
@@ -70,7 +64,6 @@ namespace WebAdminConsole.Controllers
             return View(bibNumber);
         }
 
-        // GET: BibNumbers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.BibNumber == null)
@@ -87,9 +80,6 @@ namespace WebAdminConsole.Controllers
             return View(bibNumber);
         }
 
-        // POST: BibNumbers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BibNumberId,Name,TeamId")] BibNumber bibNumber)
@@ -99,28 +89,23 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(bibNumber);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BibNumberExists(bibNumber.BibNumberId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(bibNumber);
+                await _context.SaveChangesAsync();
             }
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", bibNumber.TeamId);
-            return View(bibNumber);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BibNumberExists(bibNumber.BibNumberId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: BibNumbers/Delete/5
