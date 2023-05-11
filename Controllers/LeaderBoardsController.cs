@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.EntityFrameworkCore;
 using WebAdminConsole.Models;
+using WebAdminConsole.ViewModels;
 
 namespace WebAdminConsole.Controllers
 {
@@ -142,91 +143,97 @@ namespace WebAdminConsole.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Result(int? id)
         {
-            if (id == null || _context.LeaderBoard == null)
+            if (id == null || _context.Stage == null)
             {
                 return NotFound();
             }
 
-            var leaderBoard = await _context.LeaderBoard.FindAsync(id);
-            if (leaderBoard == null)
-            {
-                return NotFound();
-            }
-            ViewData["TeamCategoryId"] = new SelectList(_context.Set<TeamCategory>(), "TeamCategoryId", "Name", leaderBoard.TeamCategoryId);
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", leaderBoard.TeamId);
-            return View(leaderBoard);
-        }
+            ViewData["StageName"] = await _context.Stage
+                .Where(u => u.StageId == id)
+                .Select(u => u.Name)
+                .FirstOrDefaultAsync();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LeaderBoardId,Position,TeamId,Time,Difference,TeamCategoryId,CategoryPosition,CategoryDifference")] LeaderBoard leaderBoard)
-        {
-            if (id != leaderBoard.LeaderBoardId)
+            var results = await _context.Result
+                .Where(m => m.StageId == id)
+                .Include(m => m.BibNumber)
+                .ToListAsync();
+
+            if (results.Count == 0)
             {
-                return NotFound();
+                ViewData["NoResults"] = "Results not in yet. Check back later.";
+                return View();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(leaderBoard);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LeaderBoardExists(leaderBoard.LeaderBoardId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["TeamCategoryId"] = new SelectList(_context.Set<TeamCategory>(), "TeamCategoryId", "Name", leaderBoard.TeamCategoryId);
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", leaderBoard.TeamId);
-            return View(leaderBoard);
-        }
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.LeaderBoard == null)
-            {
-                return NotFound();
-            }
+            var viewModel = new List<LeaderBoardViewModel>();   
 
             var leaderBoard = await _context.LeaderBoard
-                .Include(l => l.TeamCategory)
-                .Include(l => l.Team)
-                .FirstOrDefaultAsync(m => m.LeaderBoardId == id);
-            if (leaderBoard == null)
+                .Where(u => u.StageId == id)
+                .Include(u => u.TeamCategory)
+                .ToListAsync();
+
+            foreach (var member in leaderBoard) 
+            {
+                var model = new LeaderBoardViewModel
+                {
+                    Position = member.Position,
+                    Time = member.Time,
+                    Difference = member.Difference,
+                    Team = await _context.Team
+                    .Where(u => u.TeamId == member.TeamId)
+                    .Include (u => u.TeamCategory)
+                    .FirstOrDefaultAsync(),
+                    CatPosition = member.CategoryPosition,
+                    CatDifference = member.CategoryDifference
+            };
+
+                viewModel.Add(model);
+            }
+
+            return View(viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Stage == null)
             {
                 return NotFound();
             }
 
-            return View(leaderBoard);
+            var stage = await _context.Stage
+                .FirstOrDefaultAsync(m => m.StageId == id);
+            if (stage == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["StageName"] = stage.Name;
+
+            return View(stage);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.LeaderBoard == null)
+            if (_context.Stage == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.LeaderBoard'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Stage'  is null.");
             }
-            var leaderBoard = await _context.LeaderBoard.FindAsync(id);
-            if (leaderBoard != null)
+            var results = await _context.LeaderBoard
+                .Where(u => u.StageId == id)
+                .ToListAsync();
+
+            if (results != null)
             {
-                _context.LeaderBoard.Remove(leaderBoard);
+                foreach (var result in results) { _context.LeaderBoard.Remove(result); }
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

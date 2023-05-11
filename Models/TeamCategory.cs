@@ -7,6 +7,7 @@ namespace WebAdminConsole.Models
         [Required]
         public int TeamCategoryId { get; set; }
 
+        [Display(Name = "Team Category")]
         public string Name { get; set; }
     }
 }
