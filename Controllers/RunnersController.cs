@@ -23,7 +23,12 @@ namespace WebService.Controllers
         // GET: Runners
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Runner.Include(r => r.BibNumber).Include(r => r.Category).Include(r => r.Teams);
+            var applicationDbContext = _context.Runner
+                .Include(r => r.BibNumber)
+                .Include(r => r.Category)
+                .Include(r => r.Teams)
+                .OrderBy(r => r.BibNumberId);
+
             return View(await applicationDbContext.ToListAsync());
         }
 

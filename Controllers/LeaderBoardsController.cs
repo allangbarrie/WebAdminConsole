@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.EntityFrameworkCore;
 using WebAdminConsole.Models;
 
@@ -20,14 +21,13 @@ namespace WebAdminConsole.Controllers
             _context = context;
         }
 
-        // GET: LeaderBoards
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.LeaderBoard.Include(l => l.TeamCategory).Include(l => l.Team);
-            return View(await applicationDbContext.ToListAsync());
+            return _context.Stage != null ?
+            View(await _context.Stage.ToListAsync()) :
+            Problem("Entity set 'ApplicationDbContext.Stage'  is null.");
         }
 
-        // GET: LeaderBoards/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.LeaderBoard == null)
@@ -47,33 +47,101 @@ namespace WebAdminConsole.Controllers
             return View(leaderBoard);
         }
 
-        // GET: LeaderBoards/Create
         public IActionResult Create()
         {
-            ViewData["TeamCategoryId"] = new SelectList(_context.Set<TeamCategory>(), "TeamCategoryId", "Name");
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name");
+            ViewData["StageId"] = new SelectList(_context.Set<Stage>(), "StageId", "Number");
             return View();
         }
 
-        // POST: LeaderBoards/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LeaderBoardId,Position,TeamId,Time,Difference,TeamCategoryId,CategoryPosition,CategoryDifference")] LeaderBoard leaderBoard)
+        public async Task<IActionResult> Create([Bind("StageId")] LeaderBoard leaderBoard)
         {
-            if (ModelState.IsValid)
+            var stageResults = await _context.Result
+                .Where(u => u.StageId == leaderBoard.StageId)
+                .ToListAsync();
+
+            if (stageResults.Count == 0)
             {
-                _context.Add(leaderBoard);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["NoResults"] = "Results not in yet.";
+                ViewData["StageId"] = new SelectList(_context.Set<Stage>(), "StageId", "Number");
+                return View();
             }
-            ViewData["TeamCategoryId"] = new SelectList(_context.Set<TeamCategory>(), "TeamCategoryId", "Name", leaderBoard.TeamCategoryId);
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", leaderBoard.TeamId);
-            return View(leaderBoard);
+
+            var stage = await _context.Stage
+                .Where(u => u.StageId == leaderBoard.StageId)
+                .FirstOrDefaultAsync();
+
+            var teams = await _context.Team
+                .Include(u => u.TeamCategory)
+                .ToListAsync();
+
+            var modelList = new List<LeaderBoard>();
+
+            foreach (var team in teams)
+            {
+                stageResults = await _context.Result
+                    .Where(u => u.StageId <= leaderBoard.StageId)
+                    .Where(u => u.BibNumber.Team.TeamId == team.TeamId)
+                    .Include(u => u.BibNumber.Team)
+                    .ToListAsync();
+
+                TimeSpan total = stageResults
+                    .Select(x => x.Time)
+                    .Sum(x => x.Ticks)
+                    .ToDateTime()
+                    .TimeOfDay;
+
+                var model = new LeaderBoard
+                {
+                    StageId = stage.StageId,
+                    TeamId = team.TeamId,
+                    Stage = stage,
+                    Team = team,
+                    Time = total,
+                    TeamCategory = team.TeamCategory,
+                    TeamCategoryId = team.TeamCategoryId,
+                };
+
+                modelList.Add(model);
+            }
+
+            int position = 1;
+
+            modelList = modelList
+                .OrderBy(x => x.Time)
+                .ToList();
+
+            var catPositions = new Dictionary<int, int>
+            {
+                { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 },{ 5, 1 },{ 6, 1 }
+            };
+
+            foreach (var model in modelList)
+            {
+                model.Position = position++;
+                model.Difference = model.Time - modelList
+                    .Min(u => u.Time);
+
+                model.CategoryDifference = model.Time - modelList
+                    .Where(u => u.TeamCategoryId == model.TeamCategoryId)
+                    .Min(u => u.Time);
+
+                model.CategoryPosition = catPositions[model.TeamCategoryId];
+                catPositions[model.TeamCategoryId]++;
+
+                model.Stage = null;
+                model.Team = null;
+                model.TeamCategory = null;
+
+
+                _context.Add(model);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: LeaderBoards/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.LeaderBoard == null)
@@ -91,9 +159,6 @@ namespace WebAdminConsole.Controllers
             return View(leaderBoard);
         }
 
-        // POST: LeaderBoards/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("LeaderBoardId,Position,TeamId,Time,Difference,TeamCategoryId,CategoryPosition,CategoryDifference")] LeaderBoard leaderBoard)
@@ -128,7 +193,6 @@ namespace WebAdminConsole.Controllers
             return View(leaderBoard);
         }
 
-        // GET: LeaderBoards/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.LeaderBoard == null)
@@ -148,7 +212,6 @@ namespace WebAdminConsole.Controllers
             return View(leaderBoard);
         }
 
-        // POST: LeaderBoards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
