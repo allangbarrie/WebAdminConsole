@@ -156,23 +156,18 @@ namespace WebAdminConsole.Controllers
                 .Select(u => u.Name)
                 .FirstOrDefaultAsync();
 
-            var results = await _context.Result
-                .Where(m => m.StageId == id)
-                .Include(m => m.BibNumber)
+            var leaderBoard = await _context.LeaderBoard
+                .Where(u => u.StageId == id)
+                .Include(u => u.TeamCategory)
                 .ToListAsync();
 
-            if (results.Count == 0)
+            if (leaderBoard.Count == 0)
             {
                 ViewData["NoResults"] = "Results not in yet. Check back later.";
                 return View();
             }
 
-            var viewModel = new List<LeaderBoardViewModel>();   
-
-            var leaderBoard = await _context.LeaderBoard
-                .Where(u => u.StageId == id)
-                .Include(u => u.TeamCategory)
-                .ToListAsync();
+            var viewModel = new List<LeaderBoardViewModel>();
 
             foreach (var member in leaderBoard) 
             {
