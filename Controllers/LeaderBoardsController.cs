@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,8 @@ namespace WebAdminConsole.Controllers
                 .Include(l => l.TeamCategory)
                 .Include(l => l.Team)
                 .FirstOrDefaultAsync(m => m.LeaderBoardId == id);
+
+
             if (leaderBoard == null)
             {
                 return NotFound();
@@ -93,6 +96,8 @@ namespace WebAdminConsole.Controllers
                     .ToDateTime()
                     .TimeOfDay;
 
+                long totalTicks = total.Ticks;
+
                 var model = new LeaderBoard
                 {
                     StageId = stage.StageId,
@@ -100,6 +105,7 @@ namespace WebAdminConsole.Controllers
                     Stage = stage,
                     Team = team,
                     Time = total,
+                    Ticks = totalTicks,
                     TeamCategory = team.TeamCategory,
                     TeamCategoryId = team.TeamCategoryId,
                 };
@@ -110,7 +116,7 @@ namespace WebAdminConsole.Controllers
             int position = 1;
 
             modelList = modelList
-                .OrderBy(x => x.Time)
+                .OrderBy(x => x.Ticks)
                 .ToList();
 
             var catPositions = new Dictionary<int, int>
@@ -134,6 +140,8 @@ namespace WebAdminConsole.Controllers
                 model.Stage = null;
                 model.Team = null;
                 model.TeamCategory = null;
+
+                model.Time = new TimeSpan(0);
 
 
                 _context.Add(model);
@@ -160,6 +168,11 @@ namespace WebAdminConsole.Controllers
                 .Where(u => u.StageId == id)
                 .Include(u => u.TeamCategory)
                 .ToListAsync();
+
+            foreach (var result in leaderBoard) 
+            {
+                result.Time = TimeSpan.FromTicks(result.Ticks);
+            }
 
             if (leaderBoard.Count == 0)
             {

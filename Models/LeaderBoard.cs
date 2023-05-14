@@ -10,6 +10,9 @@ namespace WebAdminConsole.Models
         public int Position { get; set; }
         
         public TimeSpan Time { get; set; }
+
+        public long Ticks { get; set; }
+
         public TimeSpan Difference { get; set; }
         public int CategoryPosition { get; set; }
         public TimeSpan CategoryDifference { get; set; }
