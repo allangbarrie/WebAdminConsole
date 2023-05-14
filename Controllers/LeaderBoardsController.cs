@@ -90,13 +90,23 @@ namespace WebAdminConsole.Controllers
                     .Include(u => u.BibNumber.Team)
                     .ToListAsync();
 
+                long totalTickstest = 0;
+
+                foreach (var result in stageResults)
+                {
+                    totalTickstest = result.Time.Ticks;
+                }
+
                 TimeSpan total = stageResults
                     .Select(x => x.Time)
                     .Sum(x => x.Ticks)
                     .ToDateTime()
                     .TimeOfDay;
 
-                long totalTicks = total.Ticks;
+                long totalTicks = stageResults
+                    .Select(x => x.Time)
+                    .Sum(x => x.Ticks)
+                    ;
 
                 var model = new LeaderBoard
                 {
@@ -127,12 +137,17 @@ namespace WebAdminConsole.Controllers
             foreach (var model in modelList)
             {
                 model.Position = position++;
-                model.Difference = model.Time - modelList
-                    .Min(u => u.Time);
 
-                model.CategoryDifference = model.Time - modelList
+
+                var tickDifference = model.Ticks - modelList.Min(u => u.Ticks);
+
+                model.Difference = TimeSpan.FromTicks(tickDifference);
+
+                var catDifTicks = model.Ticks - modelList
                     .Where(u => u.TeamCategoryId == model.TeamCategoryId)
-                    .Min(u => u.Time);
+                    .Min(u => u.Ticks);
+
+                model.CategoryDifference = TimeSpan.FromTicks(catDifTicks);
 
                 model.CategoryPosition = catPositions[model.TeamCategoryId];
                 catPositions[model.TeamCategoryId]++;
