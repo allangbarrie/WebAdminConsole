@@ -80,10 +80,13 @@ namespace WebAdminConsole.Controllers
 
 
             var position = 1;
-            var catPositions = new Dictionary<int, int>
+            var catPositions = new Dictionary<int, int>{};
+
+            foreach(var category in await _context.Category.ToListAsync()) 
             {
-                { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 },{ 5, 1 },{ 6, 1 }
-            };
+                catPositions.Add(category.CategoryId, 1);
+            }
+
             foreach (StageResultsViewModel row in viewModel.OrderBy(o => o.Time).ToList())
             {
                 row.Position = position;

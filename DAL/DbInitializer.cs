@@ -71,7 +71,9 @@ namespace WebAdminConsole.DAL
                 new Category { Name = "V40 Men" },
                 new Category { Name = "V35 Women" },
                 new Category { Name = "V50 Men" },
-                new Category { Name = "V45 Women" }
+                new Category { Name = "V45 Women" },
+                new Category { Name = "V60 Men" },
+                new Category { Name = "V55 Women" }
             };
             foreach (Category s in category)
             {
