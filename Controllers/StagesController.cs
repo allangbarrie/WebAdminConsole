@@ -48,13 +48,9 @@ namespace WebService.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StageId,Number,Name,Cutoff")] Stage stage)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(stage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(stage);
+            _context.Add(stage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -81,27 +77,24 @@ namespace WebService.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(stage);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StageExists(stage.StageId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(stage);
+                await _context.SaveChangesAsync();
             }
-            return View(stage);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!StageExists(stage.StageId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         public async Task<IActionResult> Delete(int? id)

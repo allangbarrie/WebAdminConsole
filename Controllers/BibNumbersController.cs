@@ -54,14 +54,9 @@ namespace WebAdminConsole.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BibNumberId,Name,TeamId")] BibNumber bibNumber)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(bibNumber);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", bibNumber.TeamId);
-            return View(bibNumber);
+            _context.Add(bibNumber);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)

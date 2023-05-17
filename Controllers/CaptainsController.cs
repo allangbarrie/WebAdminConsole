@@ -48,13 +48,9 @@ namespace WebAdminConsole.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CaptainId,Name")] Captain captain)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(captain);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(captain);
+            _context.Add(captain);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)

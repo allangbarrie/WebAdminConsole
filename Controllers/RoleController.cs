@@ -31,15 +31,11 @@ namespace WebAdminConsole.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Required] string name)
         {
-            if (ModelState.IsValid)
-            {
-                IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
-                if (result.Succeeded)
-                    return RedirectToAction("Index");
-                else
-                    Errors(result);
-            }
-            return View(name);
+            IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
+            if (result.Succeeded)
+                return RedirectToAction("Index");
+            else
+                Errors(result);
         }
 
         [HttpPost]

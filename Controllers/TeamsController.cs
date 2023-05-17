@@ -101,30 +101,24 @@ namespace WebAdminConsole.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-                try
-                {
+            try
+            {
 
-                    _context.Update(team);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+                _context.Update(team);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TeamExists(team.TeamId))
                 {
-                    if (!TeamExists(team.TeamId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
-                return RedirectToAction(nameof(Index));
-            //}
-            ViewData["CaptainId"] = new SelectList(_context.Set<Captain>(), "CaptainId", "Name", team.CaptainId);
-            ViewData["TeamCategoryId"] = new SelectList(_context.TeamCategory, "TeamCategoryId", "Name", team.TeamCategoryId);
-            return View(team);
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Teams/Delete/5

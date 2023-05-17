@@ -116,15 +116,9 @@ namespace WebAdminConsole.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecordId,Time,StageId,CategoryId")] Record @record)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(@record);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", @record.CategoryId);
-            ViewData["StageId"] = new SelectList(_context.Stage, "StageId", "Name", @record.StageId);
-            return View(@record);
+            _context.Add(@record);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)

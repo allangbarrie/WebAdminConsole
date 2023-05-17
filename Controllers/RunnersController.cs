@@ -78,10 +78,6 @@ namespace WebService.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
             
-            ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name", runner.BibNumberId);
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", runner.CategoryId);
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", runner.TeamId);
-            return View(runner);
         }
 
         // GET: Runners/Edit/5
@@ -115,30 +111,24 @@ namespace WebService.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(runner);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RunnerExists(runner.RunnerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(runner);
+                await _context.SaveChangesAsync();
             }
-            ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name", runner.BibNumberId);
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "Name", runner.CategoryId);
-            ViewData["TeamId"] = new SelectList(_context.Set<Team>(), "TeamId", "Name", runner.TeamId);
-            return View(runner);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RunnerExists(runner.RunnerId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Runners/Delete/5

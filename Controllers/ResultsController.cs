@@ -223,15 +223,9 @@ namespace WebService.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ResultId,StageId,Time,BibNumberId")] Result result)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(result);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BibNumberId"] = new SelectList(_context.BibNumber, "BibNumberId", "Name", result.BibNumberId);
-            ViewData["StageId"] = new SelectList(_context.Stage, "StageId", "Name", result.StageId);
-            return View(result);
+            _context.Add(result);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
