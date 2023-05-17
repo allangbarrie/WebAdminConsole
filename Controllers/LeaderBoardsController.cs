@@ -131,9 +131,9 @@ namespace WebAdminConsole.Controllers
 
             var catPositions = new Dictionary<int, int>{};
 
-            foreach (var category in await _context.Category.ToListAsync())
+            foreach (var category in await _context.TeamCategory.ToListAsync())
             {
-                catPositions.Add(category.CategoryId, 1);
+                catPositions.Add(category.TeamCategoryId, 1);
             }
 
             foreach (var model in modelList)
