@@ -129,15 +129,16 @@ namespace WebAdminConsole.Controllers
                 .OrderBy(x => x.Ticks)
                 .ToList();
 
-            var catPositions = new Dictionary<int, int>
+            var catPositions = new Dictionary<int, int>{};
+
+            foreach (var category in await _context.Category.ToListAsync())
             {
-                { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 },{ 5, 1 },{ 6, 1 }
-            };
+                catPositions.Add(category.CategoryId, 1);
+            }
 
             foreach (var model in modelList)
             {
                 model.Position = position++;
-
 
                 var tickDifference = model.Ticks - modelList.Min(u => u.Ticks);
 

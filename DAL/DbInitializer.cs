@@ -93,7 +93,10 @@ namespace WebAdminConsole.DAL
                 new TeamCategory { Name = "Open Mixed" },
                 new TeamCategory { Name = "Veteran Men" },
                 new TeamCategory { Name = "Veteran Women" },
-                new TeamCategory { Name = "Veteran Mixed" }
+                new TeamCategory { Name = "Veteran Mixed" },
+                new TeamCategory { Name = "Super Vet Men" },
+                new TeamCategory { Name = "Super Vet Women" },
+                new TeamCategory { Name = "Super Vet Mixed" }
             };
             foreach (TeamCategory s in teamcat)
             {
