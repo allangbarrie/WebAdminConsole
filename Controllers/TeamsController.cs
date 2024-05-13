@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Text;
 using WebAdminConsole.Models;
 using WebAdminConsole.ViewModels;
 
@@ -26,7 +29,27 @@ namespace WebAdminConsole.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Team.Include(t => t.Captain).Include(t => t.TeamCategory);
-            return View(await applicationDbContext.ToListAsync());
+
+            List<TeamViewModel> teamsViewModel = new List<TeamViewModel>();
+
+            foreach (var team in applicationDbContext)
+            {
+                TeamViewModel teamViewModel = new TeamViewModel()
+                {
+                    Name = team.Name,
+                    TeamId = team.TeamId,
+                    CaptainId = team.CaptainId,
+                    Captain = team.Captain,
+                    TeamCategoryId = team.TeamCategoryId, 
+                    TeamCategory = team.TeamCategory,
+                    RunnerCount= _context.Runner
+                        .Where(u => u.TeamId == team.TeamId)
+                        .Count()
+                };
+                teamsViewModel.Add(teamViewModel);
+            }
+
+            return View(teamsViewModel);
         }
 
         // GET: Teams/Details/5

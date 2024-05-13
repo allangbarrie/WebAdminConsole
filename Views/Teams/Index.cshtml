@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebAdminConsole.Models.Team>
+﻿@model IEnumerable<WebAdminConsole.ViewModels.TeamViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.TeamCategory)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RunnerCount)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                     @Html.DisplayFor(modelItem => item.TeamCategory.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunnerCount)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TeamId">Edit</a> |
