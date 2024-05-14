@@ -9,6 +9,20 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@if (ViewData["NoRunners"] != null)
+{
+    <h3 class="text-danger">@ViewData["NoRunners"]</h3>
+}
+@if (ViewData["ElevenPlus"] != null)
+{
+    <h3 class="text-danger">@ViewData["ElevenPlus"]</h3>
+}
+@if (ViewData["LessThanEleven"] != null)
+{
+    <h3 class="text-danger">@ViewData["LessThanEleven"]</h3>
+}
+
 <table class="table">
     <thead>
         <tr>

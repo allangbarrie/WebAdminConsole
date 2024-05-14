@@ -49,6 +49,23 @@ namespace WebAdminConsole.Controllers
                 teamsViewModel.Add(teamViewModel);
             }
 
+            var noRunners = teamsViewModel
+                .Where(t => t.RunnerCount == 0)
+                .Count();
+
+            var elevenPlus = teamsViewModel
+                .Where(t => t.RunnerCount >= 11)
+                .Count();
+
+            var lessThanEleven = teamsViewModel
+                .Where(t => t.RunnerCount < 11)
+                .Where(t => t.RunnerCount != 0)
+                .Count();
+
+            ViewData["NoRunners"] = string.Format("Nothing declared: {0}", noRunners);
+            ViewData["ElevenPlus"] = string.Format("11 or more: {0}", elevenPlus);
+            ViewData["LessThanEleven"] = string.Format("Less than 11: {0}", lessThanEleven);
+
             return View(teamsViewModel);
         }
 
