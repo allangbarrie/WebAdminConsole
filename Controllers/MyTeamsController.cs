@@ -238,7 +238,7 @@ namespace WebAdminConsole.Controllers
         }
 
         // POST: Runners/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteRunner")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRunnerConfirmed(int id)
         {
