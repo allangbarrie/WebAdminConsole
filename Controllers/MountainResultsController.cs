@@ -46,7 +46,17 @@ namespace WebAdminConsole.Controllers
                 viewModel.Add(mountainTeam);
             }
 
-            return View(viewModel.OrderBy(u => u.TotalTime));
+            viewModel.OrderBy(u => u.TotalTime);
+            int position = 1;
+
+            foreach (var row in viewModel)
+            {
+                row.Position = position;
+                position++;
+            }
+
+
+            return View(viewModel);
         }
 
         public TimeSpan SelectTime(List<LeaderBoard> thisTeam, int stageId) 
