@@ -33,31 +33,28 @@ namespace WebAdminConsole.Controllers
                 var mountainTeam = new MountainResultsViewModel()
                 {
                     TeamName = team.Name,
-                    Stage4 = thisTeam
-                    .Where(u => u.StageId == 4)
-                    .Select(u => u.Time)
-                    .FirstOrDefault(),
-                    Stage5 = thisTeam
-                    .Where(u => u.StageId == 5)
-                    .Select(u => u.Time)
-                    .FirstOrDefault(),
-                    Stage16 = thisTeam
-                    .Where(u => u.StageId == 16)
-                    .Select(u => u.Time)
-                    .FirstOrDefault(),
-                    Stage18 = thisTeam
-                    .Where(u => u.StageId == 18)
-                    .Select(u => u.Time)
-                    .FirstOrDefault()
+                    Stage4 = SelectTime(thisTeam, 4),
+                    Stage5 = SelectTime(thisTeam, 5),
+                    Stage16 = SelectTime(thisTeam, 16),
+                    Stage18 = SelectTime(thisTeam, 18)
                 };
 
                 mountainTeam.TotalTime = mountainTeam.Stage4 + 
                     mountainTeam.Stage5 + mountainTeam.Stage16 + 
                     mountainTeam.Stage18;
 
+                viewModel.Add(mountainTeam);
             }
 
-            return View(viewModel);
+            return View(viewModel.OrderBy(u => u.TotalTime));
+        }
+
+        public TimeSpan SelectTime(List<LeaderBoard> thisTeam, int stageId) 
+        {
+            return thisTeam
+                .Where(u => u.StageId == stageId)
+                .Select(u => u.Time)
+                .FirstOrDefault();
         }
     }
 }
