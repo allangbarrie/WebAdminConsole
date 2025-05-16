@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebAdminConsole.Migrations;
 using WebAdminConsole.Models;
 using WebAdminConsole.ViewModels;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
+using System.Threading.Tasks;
 
 namespace WebAdminConsole.Controllers
 {
@@ -23,8 +24,7 @@ namespace WebAdminConsole.Controllers
         {
             var viewModel = new List<MountainResultsViewModel>();
 
-            foreach (Team team in await _context.Team
-                .ToListAsync())
+            foreach (Team team in await _context.Team.ToListAsync())
             {
                 var thisTeam = await _context.LeaderBoard
                     .Where(u => u.TeamId == team.TeamId)
@@ -33,10 +33,10 @@ namespace WebAdminConsole.Controllers
                 var mountainTeam = new MountainResultsViewModel()
                 {
                     TeamName = team.Name,
-                    Stage4 = SelectTime(thisTeam, 4),
-                    Stage5 = SelectTime(thisTeam, 5),
-                    Stage16 = SelectTime(thisTeam, 16),
-                    Stage18 = SelectTime(thisTeam, 18)
+                    Stage4 = await SelectTime(team.TeamId, 4),
+                    Stage5 = await SelectTime(team.TeamId, 5),
+                    Stage16 = await SelectTime(team.TeamId, 16),
+                    Stage18 = await SelectTime(team.TeamId, 18)
                 };
 
                 mountainTeam.TotalTime = mountainTeam.Stage4 + 
@@ -46,25 +46,27 @@ namespace WebAdminConsole.Controllers
                 viewModel.Add(mountainTeam);
             }
 
-            viewModel.OrderBy(u => u.TotalTime);
+            var sortedList = viewModel.OrderBy(u => u.TotalTime).ToList();
             int position = 1;
 
-            foreach (var row in viewModel)
+            foreach (var row in sortedList)
             {
                 row.Position = position;
                 position++;
             }
 
-
-            return View(viewModel);
+            return View(sortedList);
         }
 
-        public TimeSpan SelectTime(List<LeaderBoard> thisTeam, int stageId) 
+        public async Task<TimeSpan> SelectTime(int teamId, int stageId) 
         {
-            return thisTeam
+            TimeSpan time = await _context.Result
                 .Where(u => u.StageId == stageId)
+                .Where(u => u.BibNumber.TeamId == teamId)
                 .Select(u => u.Time)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
+
+            return time;
         }
     }
 }
