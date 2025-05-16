@@ -27,7 +27,7 @@ namespace WebAdminConsole.Controllers
                 .ToListAsync())
             {
                 var thisTeam = await _context.LeaderBoard
-                    .Where(u => u.Equals(team))
+                    .Where(u => u.TeamId == team.TeamId)
                     .ToListAsync();
 
                 var mountainTeam = new MountainResultsViewModel()
