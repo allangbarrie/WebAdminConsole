@@ -391,14 +391,14 @@ namespace WebAdminConsole.DAL
             var team = new BulkTeamCreateViewModel[]
             {
                 new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 1", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 2", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 3", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "BeaRCat Running Club 1", CaptainEmail = "Andrew.kew@me.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "BeaRCat Running Club 2", CaptainEmail = "Andrew.kew@me.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Barrie Bombers 1", CaptainEmail = "allangbarrie@gmail.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Barrie Bombers 2", CaptainEmail = "allangbarrie@gmail.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Beeches Track Squad", CaptainEmail = "brynreynolds1@hotmail.com" },
-                //new BulkTeamCreateViewModel { StartNumber = 120, TeamName = "Boston Consulting Group", CaptainEmail = "arnold.caitlin@bcg.com" },
+                new BulkTeamCreateViewModel { StartNumber = 15, TeamName = "26.2 RRC 2", CaptainEmail = "jachang@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 30, TeamName = "26.2 RRC 3", CaptainEmail = "jachang@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 45, TeamName = "BeaRCat Running Club 1", CaptainEmail = "Andrew.kew@me.com" },
+                new BulkTeamCreateViewModel { StartNumber = 60, TeamName = "BeaRCat Running Club 2", CaptainEmail = "Andrew.kew@me.com" },
+                new BulkTeamCreateViewModel { StartNumber = 75, TeamName = "Barrie Bombers 1", CaptainEmail = "allangbarrie@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 90, TeamName = "Barrie Bombers 2", CaptainEmail = "allangbarrie@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 105, TeamName = "Beeches Track Squad", CaptainEmail = "brynreynolds1@hotmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 120, TeamName = "Boston Consulting Group", CaptainEmail = "arnold.caitlin@bcg.com" },
                 new BulkTeamCreateViewModel { StartNumber = 135, TeamName = "British Airways AC", CaptainEmail = "christkelly@yahoo.com" },
                 new BulkTeamCreateViewModel { StartNumber = 150, TeamName = "Burgess Hill Runners 1", CaptainEmail = "j.wadey@sky.com" },
                 new BulkTeamCreateViewModel { StartNumber = 165, TeamName = "Burgess Hill Runners 2", CaptainEmail = "j.wadey@sky.com" },
@@ -407,8 +407,8 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 210, TeamName = "Clapham Chasers 2", CaptainEmail = "joespraggins@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 225, TeamName = "Clapham Chasers 3", CaptainEmail = "joespraggins@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 240, TeamName = "Clapham Chasers 4", CaptainEmail = "joespraggins@hotmail.co.uk" },
-                //new BulkTeamCreateViewModel { StartNumber = 255, TeamName = "Clapham Pioneers 1", CaptainEmail = "bethanyknowles5@googlemail.com" },
-                //new BulkTeamCreateViewModel { StartNumber = 270, TeamName = "Clapham Pioneers 2", CaptainEmail = "bethanyknowles5@googlemail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 255, TeamName = "Clapham Pioneers 1", CaptainEmail = "bethanyknowles5@googlemail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 270, TeamName = "Clapham Pioneers 2", CaptainEmail = "bethanyknowles5@googlemail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 285, TeamName = "Clapham Runners", CaptainEmail = "claphamrunners@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 300, TeamName = "Dulwich Runners 1", CaptainEmail = "angenorris@googlemail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 315, TeamName = "Dulwich Runners 2", CaptainEmail = "angenorris@googlemail.com" },
@@ -469,6 +469,9 @@ namespace WebAdminConsole.DAL
 
                 for (int i = 0; i < 15; i++)
                 {
+                    var uniqueEmails = team
+    .Select(t => t.CaptainEmail)
+    .Distinct();
                     var num = s.StartNumber + i;
                     var newBibNumber = new BibNumber
                     {
@@ -562,14 +565,14 @@ namespace WebAdminConsole.DAL
             var team = new BulkTeamCreateViewModel[]
             {
                 new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 1", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 2", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 3", CaptainEmail = "jachang@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "BeaRCat Running Club 1", CaptainEmail = "Andrew.kew@me.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "BeaRCat Running Club 2", CaptainEmail = "Andrew.kew@me.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Barrie Bombers 1", CaptainEmail = "allangbarrie@gmail.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Barrie Bombers 2", CaptainEmail = "allangbarrie@gmail.com" },
-                new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "Beeches Track Squad", CaptainEmail = "brynreynolds1@hotmail.com" },
-                //new BulkTeamCreateViewModel { StartNumber = 120, TeamName = "Boston Consulting Group", CaptainEmail = "arnold.caitlin@bcg.com" },
+                new BulkTeamCreateViewModel { StartNumber = 15, TeamName = "26.2 RRC 2", CaptainEmail = "jachang@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 30, TeamName = "26.2 RRC 3", CaptainEmail = "jachang@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 45, TeamName = "BeaRCat Running Club 1", CaptainEmail = "Andrew.kew@me.com" },
+                new BulkTeamCreateViewModel { StartNumber = 60, TeamName = "BeaRCat Running Club 2", CaptainEmail = "Andrew.kew@me.com" },
+                new BulkTeamCreateViewModel { StartNumber = 75, TeamName = "Barrie Bombers 1", CaptainEmail = "allangbarrie@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 90, TeamName = "Barrie Bombers 2", CaptainEmail = "allangbarrie@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 105, TeamName = "Beeches Track Squad", CaptainEmail = "brynreynolds1@hotmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 120, TeamName = "Boston Consulting Group", CaptainEmail = "arnold.caitlin@bcg.com" },
                 new BulkTeamCreateViewModel { StartNumber = 135, TeamName = "British Airways AC", CaptainEmail = "christkelly@yahoo.com" },
                 new BulkTeamCreateViewModel { StartNumber = 150, TeamName = "Burgess Hill Runners 1", CaptainEmail = "j.wadey@sky.com" },
                 new BulkTeamCreateViewModel { StartNumber = 165, TeamName = "Burgess Hill Runners 2", CaptainEmail = "j.wadey@sky.com" },
@@ -578,8 +581,8 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 210, TeamName = "Clapham Chasers 2", CaptainEmail = "joespraggins@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 225, TeamName = "Clapham Chasers 3", CaptainEmail = "joespraggins@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 240, TeamName = "Clapham Chasers 4", CaptainEmail = "joespraggins@hotmail.co.uk" },
-                //new BulkTeamCreateViewModel { StartNumber = 255, TeamName = "Clapham Pioneers 1", CaptainEmail = "bethanyknowles5@googlemail.com" },
-                //new BulkTeamCreateViewModel { StartNumber = 270, TeamName = "Clapham Pioneers 2", CaptainEmail = "bethanyknowles5@googlemail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 255, TeamName = "Clapham Pioneers 1", CaptainEmail = "bethanyknowles5@googlemail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 270, TeamName = "Clapham Pioneers 2", CaptainEmail = "bethanyknowles5@googlemail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 285, TeamName = "Clapham Runners", CaptainEmail = "claphamrunners@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 300, TeamName = "Dulwich Runners 1", CaptainEmail = "angenorris@googlemail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 315, TeamName = "Dulwich Runners 2", CaptainEmail = "angenorris@googlemail.com" },
