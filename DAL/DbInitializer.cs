@@ -21,7 +21,7 @@ namespace WebAdminConsole.DAL
         internal static async Task Initialize(AppIdentityDbContext context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             //Stages
             if (context.Stage.Any())
@@ -469,9 +469,6 @@ namespace WebAdminConsole.DAL
 
                 for (int i = 0; i < 15; i++)
                 {
-                    var uniqueEmails = team
-    .Select(t => t.CaptainEmail)
-    .Distinct();
                     var num = s.StartNumber + i;
                     var newBibNumber = new BibNumber
                     {
