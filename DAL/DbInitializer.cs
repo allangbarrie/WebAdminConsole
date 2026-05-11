@@ -446,34 +446,56 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 885, TeamName = "Wimbledon Windmilers 2", CaptainEmail = "coherich@gmail.com" }
 
                 };
-                foreach (BulkTeamCreateViewModel s in team)
-                {
-                    var captainId = context.Captain
-                        .Where(u => u.Name == s.CaptainEmail)
-                        .FirstOrDefault();
 
-                    var newTeam = new Team
+                // Load all captains once
+                var captains = context.Captain
+                    .ToDictionary(c => c.Name, c => c.CaptainId);
+
+                var teamEntities = new List<Team>();
+
+                // Create all teams in memory
+                foreach (var s in team)
+                {
+                    if (!captains.TryGetValue(s.CaptainEmail, out var captainId))
+                    {
+                        continue; // or throw exception
+                    }
+
+                    teamEntities.Add(new Team
                     {
                         TeamCategoryId = 1,
                         Name = s.TeamName,
-                        CaptainId = captainId.CaptainId
-                    };
-                    context.Team.Add(newTeam);
-                    context.SaveChanges();
+                        CaptainId = captainId
+                    });
+                }
+
+                // Insert all teams in one go
+                context.Team.AddRange(teamEntities);
+                context.SaveChanges();
+
+                // Create all bib numbers
+                var bibNumbers = new List<BibNumber>();
+
+                for (int t = 0; t < team.Length; t++)
+                {
+                    var source = team[t];
+                    var savedTeam = teamEntities[t];
 
                     for (int i = 0; i < 15; i++)
                     {
-                        var num = s.StartNumber + i;
-                        var newBibNumber = new BibNumber
+                        var num = source.StartNumber + i;
+
+                        bibNumbers.Add(new BibNumber
                         {
                             Name = num.ToString(),
-                            TeamId = newTeam.TeamId
-                        };
-
-                        context.Add(newBibNumber);
-                        context.SaveChanges();
+                            TeamId = savedTeam.TeamId
+                        });
                     }
                 }
+
+                // Insert all bibs in one go
+                context.BibNumber.AddRange(bibNumbers);
+                context.SaveChanges();
             }
 
         }
