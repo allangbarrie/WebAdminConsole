@@ -338,36 +338,38 @@ namespace WebAdminConsole.DAL
             {
                 var captain = new Captain[]
                 {
-                new Captain { Name = "jachang@hotmail.co.uk" },
-                new Captain { Name = "Andrew.kew@me.com" },
-                new Captain { Name = "fletcherpaul90@gmail.com" },
-                new Captain { Name = "brynreynolds1@hotmail.com" },
-                new Captain { Name = "breda.massimiliano@bcg.com" },
-                new Captain { Name = "christkelly@yahoo.com" },
-                new Captain { Name = "j.wadey@sky.com" },
-                new Captain { Name = "joespraggins@hotmail.co.uk" },
-                new Captain { Name = "catherine.E.L.hodge@gmail.com" },
-                new Captain { Name = "claphamrunners@gmail.com" },
-                new Captain { Name = "angenorris@googlemail.com" },
-                new Captain { Name = "angeladuff81@gmail.com" },
-                new Captain { Name = "secretary@epsomandewellharriers.org" },
-                new Captain { Name = "cpfckev@yahoo.co.uk" },
-                new Captain { Name = "andywood3@hotmail.com" },
-                new Captain { Name = "julianandroman@me.com" },
-                new Captain { Name = "nick_sille@hotmail.com" },
-                new Captain { Name = "steve.wright@kelsey.co.uk" },
-                new Captain { Name = "green.belt.relay@queensparkharriers.org.uk" },
-                new Captain { Name = "ranelaghgbr@gmail.com" },
-                new Captain { Name = "hanssale4@yahoo.co.uk" },
-                new Captain { Name = "ian.fullen@hotmail.com" },
-                new Captain { Name = "Atellett87@gmail.com" },
-                new Captain { Name = "chancerowan01@yahoo.com" },
-                new Captain { Name = "eliselawrenson@yahoo.com" },
-                new Captain { Name = "zoe.a.riding@gmail.com" },
-                new Captain { Name = "nick@nickaltmann.net" },
-                new Captain { Name = "cat.una.os@gmail.com" },
-                new Captain { Name = "coherich@gmail.com" }
-
+                    new Captain { Name = "julianandroman@me.com" },
+                    new Captain { Name = "j.wadey@sky.com" },
+                    new Captain { Name = "brynreynolds1@hotmail.com" },
+                    new Captain { Name = "andywood3@hotmail.com" },
+                    new Captain { Name = "ranelaghgbr@gmail.com" },
+                    new Captain { Name = "sjbelliott41@hotmail.com" },
+                    new Captain { Name = "green.belt.relay@queensparkharriers.org.uk" },
+                    new Captain { Name = "joespraggins@hotmail.co.uk" },
+                    new Captain { Name = "bethanyknowles5@googlemail.com" },
+                    new Captain { Name = "nick@nickaltmann.net" },
+                    new Captain { Name = "arnold.caitlin@bcg.com" },
+                    new Captain { Name = "fwomelsdorf@web.de" },
+                    new Captain { Name = "christkelly@yahoo.com" },
+                    new Captain { Name = "email@nhenderson.com" },
+                    new Captain { Name = "grahamhannay@googlemail.com" },
+                    new Captain { Name = "coherich@gmail.com" },
+                    new Captain { Name = "richnicholson@gmail.com" },
+                    new Captain { Name = "jsaingold@gmail.com" },
+                    new Captain { Name = "hollie.ryder@outlook.com" },
+                    new Captain { Name = "liamjoyceuk@hotmail.co.uk" },
+                    new Captain { Name = "peterhanslip@hotmail.com" },
+                    new Captain { Name = "melgreenwoods@gmail.com" },
+                    new Captain { Name = "colinmuir@hotmail.com" },
+                    new Captain { Name = "Andrew.kew@me.com" },
+                    new Captain { Name = "steve.wright@kelsey.co.uk" },
+                    new Captain { Name = "claphamrunners@gmail.com" },
+                    new Captain { Name = "jachang@hotmail.co.uk" },
+                    new Captain { Name = "cat.una.os@gmail.com" },
+                    new Captain { Name = "zoe.a.riding@gmail.com" },
+                    new Captain { Name = "terena.dbh@mac.com" },
+                    new Captain { Name = "nick_sille@hotmail.com" },
+                    new Captain { Name = "angenorris@googlemail.com" }
                 };
                 var captainRole = new string[] { "Captain" };
                 foreach (Captain s in captain)
@@ -378,12 +380,10 @@ namespace WebAdminConsole.DAL
             }
 
             //TeamCreate
-            if (context.Team.Any())
+            if (!context.Team.Any())
             {
-                return;   // DB has been seeded
-            }
-            var team = new BulkTeamCreateViewModel[]
-            {
+                var team = new BulkTeamCreateViewModel[]
+                {
                 new BulkTeamCreateViewModel { StartNumber = 0, TeamName = "26.2 RRC 1", CaptainEmail = "jachang@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 15, TeamName = "26.2 RRC 2", CaptainEmail = "jachang@hotmail.co.uk" },
                 new BulkTeamCreateViewModel { StartNumber = 30, TeamName = "26.2 RRC 3", CaptainEmail = "jachang@hotmail.co.uk" },
@@ -445,36 +445,36 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 870, TeamName = "Wimbledon Windmilers 1", CaptainEmail = "coherich@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 885, TeamName = "Wimbledon Windmilers 2", CaptainEmail = "coherich@gmail.com" }
 
-            };
-            foreach (BulkTeamCreateViewModel s in team)
-            {
-                var captainId = context.Captain
-                    .Where(u => u.Name == s.CaptainEmail)
-                    .FirstOrDefault();
-
-                var newTeam = new Team
-                {
-                    TeamCategoryId = 1,
-                    Name = s.TeamName,
-                    CaptainId = captainId.CaptainId
                 };
-                context.Team.Add(newTeam);
-                context.SaveChanges();
-
-                for (int i = 0; i < 15; i++)
+                foreach (BulkTeamCreateViewModel s in team)
                 {
-                    var num = s.StartNumber + i;
-                    var newBibNumber = new BibNumber
-                    {
-                        Name = num.ToString(),
-                        TeamId = newTeam.TeamId
-                    };
+                    var captainId = context.Captain
+                        .Where(u => u.Name == s.CaptainEmail)
+                        .FirstOrDefault();
 
-                    context.Add(newBibNumber);
+                    var newTeam = new Team
+                    {
+                        TeamCategoryId = 1,
+                        Name = s.TeamName,
+                        CaptainId = captainId.CaptainId
+                    };
+                    context.Team.Add(newTeam);
                     context.SaveChanges();
+
+                    for (int i = 0; i < 15; i++)
+                    {
+                        var num = s.StartNumber + i;
+                        var newBibNumber = new BibNumber
+                        {
+                            Name = num.ToString(),
+                            TeamId = newTeam.TeamId
+                        };
+
+                        context.Add(newBibNumber);
+                        context.SaveChanges();
+                    }
                 }
             }
-
 
         }
 
