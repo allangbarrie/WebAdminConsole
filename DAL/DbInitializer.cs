@@ -440,8 +440,8 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 795, TeamName = "Team Bushy", CaptainEmail = "zoe.a.riding@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 810, TeamName = "Thames Hare & Hounds 1", CaptainEmail = "nick@nickaltmann.net" },
                 new BulkTeamCreateViewModel { StartNumber = 825, TeamName = "Thames Hare & Hounds 2", CaptainEmail = "nick@nickaltmann.net" },
-                new BulkTeamCreateViewModel { StartNumber = 840, TeamName = "Victoria Park Harriers & Tower Hamlets AC (mixed)", CaptainEmail = "liamjoyceuk@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 855, TeamName = "Victoria Park Harriers & Tower Hamlets AC (women)", CaptainEmail = "cat.una.os@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 840, TeamName = "VPH & TH AC (mixed)", CaptainEmail = "liamjoyceuk@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 855, TeamName = "VPH & TH AC (women)", CaptainEmail = "cat.una.os@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 870, TeamName = "Wimbledon Windmilers 1", CaptainEmail = "coherich@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 885, TeamName = "Wimbledon Windmilers 2", CaptainEmail = "coherich@gmail.com" }
 
@@ -633,8 +633,8 @@ namespace WebAdminConsole.DAL
                 new BulkTeamCreateViewModel { StartNumber = 795, TeamName = "Team Bushy", CaptainEmail = "zoe.a.riding@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 810, TeamName = "Thames Hare & Hounds 1", CaptainEmail = "nick@nickaltmann.net" },
                 new BulkTeamCreateViewModel { StartNumber = 825, TeamName = "Thames Hare & Hounds 2", CaptainEmail = "nick@nickaltmann.net" },
-                new BulkTeamCreateViewModel { StartNumber = 840, TeamName = "Victoria Park Harriers & Tower Hamlets AC (mixed)", CaptainEmail = "liamjoyceuk@hotmail.co.uk" },
-                new BulkTeamCreateViewModel { StartNumber = 855, TeamName = "Victoria Park Harriers & Tower Hamlets AC (women)", CaptainEmail = "cat.una.os@gmail.com" },
+                new BulkTeamCreateViewModel { StartNumber = 840, TeamName = "VPH & TH AC (mixed)", CaptainEmail = "liamjoyceuk@hotmail.co.uk" },
+                new BulkTeamCreateViewModel { StartNumber = 855, TeamName = "VPH & TH AC (women)", CaptainEmail = "cat.una.os@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 870, TeamName = "Wimbledon Windmilers 1", CaptainEmail = "coherich@gmail.com" },
                 new BulkTeamCreateViewModel { StartNumber = 885, TeamName = "Wimbledon Windmilers 2", CaptainEmail = "coherich@gmail.com" }
 

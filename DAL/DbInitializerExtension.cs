@@ -14,10 +14,10 @@ namespace WebAdminConsole.DAL
             {
                 var context = services.GetRequiredService<AppIdentityDbContext>();
 
-                
-                //await DbInitializer.SeedAdminUser(context);
-                //await DbInitializer.SeedPeter(context);
-                //await DbInitializer.SeedCaptains(context);
+
+                await DbInitializer.SeedAdminUser(context);
+                await DbInitializer.SeedPeter(context);
+                await DbInitializer.SeedCaptains(context);
                 await DbInitializer.Initialize(context);
 
                 // For testing only
