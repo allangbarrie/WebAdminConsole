@@ -24,12 +24,10 @@ namespace WebAdminConsole.DAL
             context.Database.Migrate();
 
             //Stages
-            if (context.Stage.Any())
+            if (!context.Stage.Any())
             {
-                return;   // DB has been seeded
-            }
-            var stages = new Stage[]
-            {
+                var stages = new Stage[]
+                {
                 new Stage { Number = "Stage 1", Name = "Hampton Court", Cutoff = TimeSpan.Parse("02:18") },
                 new Stage { Number = "Stage 2", Name = "Staines", Cutoff = TimeSpan.Parse("01:41") },
                 new Stage { Number = "Stage 3", Name = "Boveney Church", Cutoff = TimeSpan.Parse("02:01") },
@@ -52,20 +50,19 @@ namespace WebAdminConsole.DAL
                 new Stage { Number = "Stage 20", Name = "West Hanger", Cutoff = TimeSpan.Parse("01:04") },
                 new Stage { Number = "Stage 21", Name = "Ripley", Cutoff = TimeSpan.Parse("01:30") },
                 new Stage { Number = "Stage 22", Name = "Walton Bridge", Cutoff = TimeSpan.Parse("01:20") }
-            };
-            foreach (Stage s in stages)
-            {
-                context.Stage.Add(s);
+                };
+                foreach (Stage s in stages)
+                {
+                    context.Stage.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
             //Categories
-            if (context.Category.Any())
+            if (!context.Category.Any())
             {
-                return;   // DB has been seeded
-            }
-            var category = new Category[]
-            {
+                var category = new Category[]
+                {
                 new Category { Name = "Senior Men" },
                 new Category { Name = "Senior Women" },
                 new Category { Name = "V35 Men" },
@@ -76,39 +73,37 @@ namespace WebAdminConsole.DAL
                 new Category { Name = "V55 Women" },
                 new Category { Name = "V65 Men" },
                 new Category { Name = "V65 Women" }
-            };
-            foreach (Category s in category)
-            {
-                context.Category.Add(s);
+                };
+                foreach (Category s in category)
+                {
+                    context.Category.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
             //TeamCategories
-            if (context.TeamCategory.Any())
+            if (!context.TeamCategory.Any())
             {
-                return;   // DB has been seeded
-            }
-            var teamcat = new TeamCategory[]
-            {
+                var teamcat = new TeamCategory[]
+                {
                 new TeamCategory { Name = "Open Men" },
                 new TeamCategory { Name = "Open Women" },
                 new TeamCategory { Name = "Open Mixed" },
                 new TeamCategory { Name = "Veterans" },
                 new TeamCategory { Name = "Super Vets" }
-            };
-            foreach (TeamCategory s in teamcat)
-            {
-                context.TeamCategory.Add(s);
+                };
+                foreach (TeamCategory s in teamcat)
+                {
+                    context.TeamCategory.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
             //Records
-            if (context.Record.Any())
+            if (!context.Record.Any())
             {
-                return;   // DB has been seeded
-            }
-            var records = new Record[]
-            {
+                var records = new Record[]
+                {
                 new Record { Time = TimeSpan.Parse("01:10:01"), StageId = 1, CategoryId = 1 },
                 new Record { Time = TimeSpan.Parse("01:13:04"), StageId = 1, CategoryId = 2 },
                 new Record { Time = TimeSpan.Parse("01:13:16"), StageId = 1, CategoryId = 3 },
@@ -330,20 +325,19 @@ namespace WebAdminConsole.DAL
                 new Record { Time = TimeSpan.Parse("01:08:20"), StageId = 22, CategoryId = 9 },
                 new Record { Time = TimeSpan.Parse("00:00:00"), StageId = 22, CategoryId = 10 }
 
-            };
-            foreach (Record s in records)
-            {
-                context.Record.Add(s);
+                };
+                foreach (Record s in records)
+                {
+                    context.Record.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
             //Captains
-            if (context.Captain.Any())
+            if (!context.Captain.Any())
             {
-                return;   // DB has been seeded
-            }
-            var captain = new Captain[]
-            {
+                var captain = new Captain[]
+                {
                 new Captain { Name = "jachang@hotmail.co.uk" },
                 new Captain { Name = "Andrew.kew@me.com" },
                 new Captain { Name = "fletcherpaul90@gmail.com" },
@@ -374,14 +368,14 @@ namespace WebAdminConsole.DAL
                 new Captain { Name = "cat.una.os@gmail.com" },
                 new Captain { Name = "coherich@gmail.com" }
 
-            };
-            var captainRole = new string[] { "Captain" };
-            foreach (Captain s in captain)
-            {
-                context.Captain.Add(s);
-                context.SaveChanges();
+                };
+                var captainRole = new string[] { "Captain" };
+                foreach (Captain s in captain)
+                {
+                    context.Captain.Add(s);
+                    context.SaveChanges();
+                }
             }
-
 
             //TeamCreate
             if (context.Team.Any())
