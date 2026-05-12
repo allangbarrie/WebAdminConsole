@@ -175,7 +175,7 @@ namespace WebAdminConsole.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRunner([Bind("RunnerId,First,Last,BibNumberId,TeamId,CategoryId")] Runner runner)
+        public async Task<IActionResult> EditRunner([Bind("RunnerId,First,Last,Saturday,Sunday,BibNumberId,TeamId,CategoryId")] Runner runner)
         {
             var thisRunner = _context.Runner
                 .Where(u => u.RunnerId == runner.RunnerId)

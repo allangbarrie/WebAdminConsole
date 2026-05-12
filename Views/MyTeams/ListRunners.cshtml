@@ -12,41 +12,69 @@
 <p>
     <a asp-action="NewRunner" asp-route-id="@ViewBag.TeamId">New Runner</a>
 </p>
-<table class="table">
+<table class="table table-bordered align-middle">
     <thead>
         <tr>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.BibNumber)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.First)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.Last)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th></th>
+
+            <th colspan="2" class="text-center table-secondary">
+                Early Starter
+            </th>
+
+            <th rowspan="2"></th>
+        </tr>
+
+        <tr>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Saturday)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Sunday)
+            </th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
             @Html.HiddenFor(modelItem => item.Teams.TeamId)
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.BibNumber.Name)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.First)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Last)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
+
+                <td class="table-light text-center">
+                    @Html.DisplayFor(modelItem => item.Saturday)
+                </td>
+
+                <td class="table-light text-center">
+                    @Html.DisplayFor(modelItem => item.Sunday)
+                </td>
+
                 <td>
                     <a asp-action="EditRunner" asp-route-id="@item.RunnerId">Edit</a> |
                     <a asp-action="DeleteRunner" asp-route-id="@item.RunnerId">Delete</a>
@@ -54,8 +82,6 @@
             </tr>
         }
     </tbody>
-
-    
 </table>
 
 <a asp-action="Index">Back to List</a>
