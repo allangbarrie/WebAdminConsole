@@ -12,22 +12,36 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.First)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.Last)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.BibNumber)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.Teams)
             </th>
-            <th>
+            <th rowspan="2">
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th></th>
+
+            <th colspan="2" class="text-center table-secondary">
+                Early Starter
+            </th>
+
+            <th rowspan="2"></th>
+        </tr>
+
+        <tr>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Saturday)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Sunday)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -48,9 +62,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
+            <td class="table-light text-center">
+                @Html.DisplayFor(modelItem => item.Saturday)
+            </td>
+
+            <td class="table-light text-center">
+                @Html.DisplayFor(modelItem => item.Sunday)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RunnerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RunnerId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.RunnerId">Delete</a>
             </td>
         </tr>

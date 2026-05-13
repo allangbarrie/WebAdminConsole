@@ -38,6 +38,27 @@
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
+            <div class="card border-secondary mt-3 mb-3">
+                <div class="card-header bg-secondary text-white">
+                    Early Starters Only - Stage Number
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Saturday" class="control-label"></label>
+                        <input asp-for="Saturday" class="form-control" />
+                        <span asp-validation-for="Saturday" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Sunday" class="control-label"></label>
+                        <input asp-for="Sunday" class="form-control" />
+                        <span asp-validation-for="Sunday" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

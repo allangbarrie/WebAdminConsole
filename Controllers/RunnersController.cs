@@ -104,7 +104,7 @@ namespace WebService.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RunnerId,First,Last,BibNumberId,TeamId,CategoryId")] Runner runner)
+        public async Task<IActionResult> Edit(int id, [Bind("RunnerId,First,Last,Saturday,Sunday,BibNumberId,TeamId,CategoryId")] Runner runner)
         {
             if (id != runner.RunnerId)
             {
